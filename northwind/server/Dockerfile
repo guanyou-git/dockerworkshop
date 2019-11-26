@@ -1,7 +1,7 @@
 FROM node:latest
 
 # Set environment variables
-ENV APP_ROOT=/app APP_PORT=3000
+ENV APP_ROOT=/app APP_PORT=3000 DB_USER=root DB_PASSWORD=changeit DB_HOST=mysql
 
 # Create directory and cd into it
 WORKDIR ${APP_ROOT}
@@ -11,6 +11,7 @@ ADD main.js .
 ADD package.json .
 ADD public public
 ADD views views
+ADD config config
 
 # Run some command
 RUN npm install
@@ -19,7 +20,7 @@ RUN npm install
 EXPOSE ${APP_PORT}
 
 # Add healthcheck to the application
-HEALTHCHECK --interval=10s --timeout=5s --retries=3 \
+HEALTHCHECK --interval=60s --timeout=5s --retries=3 \
     CMD curl -f http://localhost:${APP_PORT}/health > /dev/null || exit 1
 
 
