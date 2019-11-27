@@ -1,0 +1,6 @@
+
+
+
+data:
+  db_host: nwdb-svc.nwapp.svc.cluster.local
+  db_user: root

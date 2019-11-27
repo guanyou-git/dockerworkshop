@@ -1,0 +1,7 @@
+
+
+containers:
+- name: nwapp-container
+  image: stackupiss/northwin-app:v1
+  imagePullPolicy: Always
+
