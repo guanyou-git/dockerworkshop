@@ -11,6 +11,29 @@ metadata:
     version: v1
 
 ---
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: nwapp-config
+  namespace: nwapp
+
+data:
+  db_password: changeit
+
+---
+apiVersion: v1
+kind: Secret
+
+metadata:
+  name: nwapp-secret
+  namespace: nwapp
+
+data:
+  db_password: Y2hhbmdlaXQ=
+
+
+---
 apiVersion: apps/v1
 kind: Deployment
 
@@ -23,7 +46,6 @@ metadata:
 
 spec:
   replicas: 1
-  minReadySeconds: 60
   selector:
     matchLabels:
       name: nwdb-pod
@@ -39,13 +61,101 @@ spec:
       - name: nwdb-container
         image: stackupiss/northwind-db:v1
         imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nwapp-secret
+              key: db_password
+            # configMapKeyRef:
+            #   name: nwapp-config
+            #   key: db_password
         ports:
-        - containerPort: 3306
+        - name: sqlcontainer
+          containerPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: nw-svc
+  namespace: nwapp
+  labels:
+    name: nwdb-pod
+    version: v1
+
+spec:
+  type: "ClusterIP"
+  selector:
+    name: nwdb-pod
+    version: v1
+  ports:
+  - name: http
+    port: 3306
+    targetPort: sqlcontainer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nwapp-deploy
+  namespace: nwapp
+  labels:
+    name: nwapp-pod
+    version: v1
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nwapp-pod
+      version: v1
+  template:
+    metadata:
+      name: nwapp-pod
+      labels:
+        name: nwapp-pod
+        version: v1
+    spec:
+      containers:
       - name: nwapp
         image: guanyou/server:v3
         imagePullPolicy: Always
         env:
+        - name: INSTANCE_IP_ADDRESS
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: DB_HOST
+          value: "nw-svc"
         - name: DB_PASSWORD
-          value: "changeit"
+          valueFrom:
+            secretKeyRef:
+              name: nwapp-secret
+              key: db_password
         ports:
-        - containerPort: 3000
+        - name: nwapp-port
+          containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: nwapp-svc
+  namespace: nwapp
+  labels:
+    name: nwapp-pod
+    version: v1
+
+spec:
+  type: "LoadBalancer"
+  selector:
+    name: nwapp-pod
+    version: v1
+  ports:
+  - name: http
+    port: 80
+    targetPort: nwapp-port

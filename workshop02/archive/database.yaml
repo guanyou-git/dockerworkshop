@@ -1,0 +1,51 @@
+# the only environment is DB_PASSWORD
+# use ns nwdb
+
+---
+apiVersion: v1
+kind: Namespace
+
+metadata:
+  name: nwapp
+  labels:
+    version: v1
+
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: nwdb-deploy
+  namespace: nwapp
+  labels:
+    name: nwdb-pod
+    version: v1
+
+spec:
+  replicas: 1
+  minReadySeconds: 60
+  selector:
+    matchLabels:
+      name: nwdb-pod
+      version: v1
+  template:
+    metadata:
+      name: nwdb-pod
+      labels:
+        name: nwdb-pod
+        version: v1
+    spec:
+      containers:
+      - name: nwdb-container
+        image: stackupiss/northwind-db:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+      - name: nwapp
+        image: guanyou/server:v3
+        imagePullPolicy: Always
+        env:
+        - name: DB_PASSWORD
+          value: "changeit"
+        ports:
+        - containerPort: 3000
