@@ -1,7 +1,7 @@
 FROM node:latest
 
 # Set environment variables
-ENV APP_ROOT=/app APP_PORT=3000 DB_USER=root DB_PASSWORD=changeit DB_HOST=mysql
+ENV APP_ROOT=/app APP_PORT=3000 DB_USER=root DB_PASSWORD=changeit
 
 # Create directory and cd into it
 WORKDIR ${APP_ROOT}
