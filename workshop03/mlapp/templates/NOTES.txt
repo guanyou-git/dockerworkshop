@@ -1,0 +1,2 @@
+How to access the app..
+I hope you know how to use k8s'
