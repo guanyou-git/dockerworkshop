@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: myappv1-svc
+
+spec:
+  selector:
+    name: myapp # match to db-deployment.yaml
+    version: v1
+  type: ClusterIP
+  ports:
+  - name: myapp-svc-port
+    port: 80
+    targetPort: myapp-port
