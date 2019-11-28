@@ -10,6 +10,16 @@ metadata:
 
 spec:
   rules:
+  # - http:
+  #     paths:
+  #     - path: /v1
+  #       backend:
+  #         serviceName: myappv1-svc
+  #         servicePort: 80
+  #     - path: /v2
+  #       backend:
+  #         serviceName: myappv2-svc
+  #         servicePort: 80
   - host: app1.157.230.192.235.nip.io
     http:
       paths:
