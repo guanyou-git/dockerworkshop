@@ -1,0 +1,21 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: fortune-ingress
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+#    - "*"  # don't need as any other will also be routed
+    - "fortune.157.230.194.83.nip.io"
+    port:
+      number: 80
+      name: http
+      protocol: HTTP
+
+
+
+# Gateway -> VirtualService -> Destination Rule
+# http://fortune.157.230.194.83.nip.io:80/v1
