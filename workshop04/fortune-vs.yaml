@@ -68,3 +68,13 @@ spec:
           number: 80
     rewrite:
       uri: /
+  - match:
+    - uri:
+        exact: /
+    route:
+    - destination:
+        host: weatherapp-svc.default.svc.cluster.local # can be fortuneapp-svc
+        port:
+          number: 80
+    rewrite:
+      uri: /
