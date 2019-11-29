@@ -13,14 +13,12 @@ spec:
   http:
   - match:
     - uri:
-        exact: /v1
+        prefix: /weather
     route:
     - destination:
         host: weatherapp-svc.default.svc.cluster.local # can be fortuneapp-svc
         port:
           number: 80
-    rewrite:
-      uri: /
   - match:
     - uri:
         exact: /v3
