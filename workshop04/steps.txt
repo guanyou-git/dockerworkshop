@@ -1,0 +1,116 @@
+  966  mkdir workshop04
+  967  cd workshop04/
+  968  ll
+  969  git status
+  970  ll
+  971  helm install istio-init --name istio-init --namespace istio-system
+  972  helm repo update
+  973  helm install istio-init --name istio-init --namespace istio-system
+  974  helm search istio
+  975  helm search istio-init
+  976  kubectl create ns istio-system
+  977  helm install $ISTIO_HOME/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
+  978  helm install istio-init --name istio-init --namespace istio-system
+  979  ll
+  980  tar -zxvf istio-1.4.0-linux.tar.gz ./
+  981  tar -zxvf istio-1.4.0-linux.tar.gz 
+  982  ll
+  983  ll istio-1.4.0 | grep init
+  984  cd istio-1.4.0/
+  985  ll
+  986  cd bin/
+  987  ll
+  988  cd ../install/
+  989  ll
+  990  cd tools/
+  991  ll
+  992  cd ..
+  993  ll
+  994  cd ..
+  995  ll
+  996  vim ~/.bashrc
+  997  ll
+  998  source ~/.bashrc
+  999  cd workshop04/
+ 1000  ll
+ 1001  cd istio-1.4.0/
+ 1002  ll
+ 1003  cd install/
+ 1004  ll
+ 1005  cd htelm
+ 1006  ll
+ 1007  cd kubernetes/
+ 1008  ll
+ 1009  cd helm/
+ 1010  ll
+ 1011  helm install istio --name istio --namespace istio-system --values istio/values-istio-demo.yaml 
+ 1012  kubectl get svc -n istio-system
+ 1013  source ~/.bashrc
+ 1014  kubectl get svc -n istio-system
+ 1015  kubectl get pods
+ 1016  kubectl get pods --namespace istio-systme
+ 1017  kubectl get pods --namespace istio-system
+ 1018  kubectl get pods,svc --namespace istio-system
+ 1019  ll
+ 1020  kubectl get pods
+ 1021  cd ..
+ 1022  ll
+ 1023  cd ..
+ 1024  ll
+ 1025  kubectl apply -f fortuneapp-deployment.yaml 
+ 1026  kubectl get pods
+ 1027  kubectl get svbc
+ 1028  kubectl get svc
+ 1029  kubectl port-forward svc/fortuneapp-svc 8080:80
+ 1030  kubectl get pods
+ 1031  kubectl get svc
+ 1032  kubectl port-forward svc/fortuneapp-svc 8000:80
+ 1033  ll
+ 1034  istioctl kube-inject -f fortuneapp-deployment.yaml > fortuneapp-deployment-withsidecar.yaml
+ 1035  kubectl get deployment
+ 1036  kubectl delete deploy/fortuneapp
+ 1037  kubectl get deployment
+ 1038  kubectl get pods -w
+ 1039  kubectl apply -f fortuneapp-deployment-withsidecar.yaml 
+ 1040  kubectl get pods -w
+ 1041  kubectl exec -it fortuneapp-5446c896c7-dbgn5 fortuneapp bash
+ 1042  kubectl exec -it fortuneapp-5446c896c7-dbgn5 -c fortuneapp bash
+ 1043  kubectl get pods -w
+ 1044  kubectl get pods -o wide
+ 1045  kubectl get pods -o json
+ 1046  kubectl get pods -o wide
+ 1047  kubectl describe pod/fortuneapp-5446c896c7-dbgn5
+ 1048  kubectl exec -it fortuneapp-5446c896c7-dbgn5 -c a16b2115a2be95dedb05b84ac19990f82b0a6fe189e667b0dd1c715e4d0dde58 bash
+ 1049  kubectl exec -it fortuneapp-5446c896c7-dbgn5 -c istio-proxy bash
+ 1050  ll
+ 1051  kubectl get pods
+ 1052  cp fortuneapp-deployment.yaml gateway.yaml
+ 1053  mv gateway.yaml fortune-gw.yaml
+ 1054  cp fortune-gw.yaml fortune-vs.yaml
+ 1055  kubectl get pods
+ 1056  kubectl get svc
+ 1057  kubectl get deployments
+ 1058  kubectl delete deployment fortuneapp
+ 1059  kubectl get svc
+ 1060  kubectl delete svc fortuneapp-svc
+ 1061  istioctl kube-inject -f fortuneapp-deployment.yaml > fortuneapp-deployment-withsidecar.yaml 
+ 1062  kubectl apply -f fortuneapp-deployment-withsidecar.yaml 
+ 1063  ll
+ 1064  kubectl get pods
+ 1065  kubectl get svc
+ 1066  kubectl get deploy
+ 1067  kubectl apply -f fortune-gw.yaml 
+ 1076  kubectl apply -f fortune-vs.yaml 
+ 1081  curl -v http://fortune.157.230.194.83.nip.io/v5 --header "user:user"
+ 1082  curl -v http://fortune.157.230.194.83.nip.io/v5 --header "user:weiang"
+ 1083  git status
+ 1084  git add .
+ 1085  git commit -m "sample ingress vs gw"
+ 1086  git push origin master
+ 1087  cp ../workshop03/appv1-deployment.yaml ./weather-deployment.yaml
+ 1088  cp ../workshop03/appv1-svc.yaml ./weather-svc.yaml
+ 1089  kubectl apply -f weather-deployment.yaml
+ 1090  kubectl apply -f weather-svc.yaml
+ 1091  kubectl apply -f fortune-vs.yaml
+ 1094  kubectl get svc --namespace istio-system
+ 1096  history > steps.txt
